@@ -68,7 +68,7 @@ function formatDate(dateString) {
 }
 
 function getBreadcrumbPath() {
-    const path = ['Мои заметки'];
+    const path = [];
     let container = notesData;
     
     for (const themeId of currentPath) {
@@ -84,13 +84,16 @@ function getBreadcrumbPath() {
 
 function updateBreadcrumb() {
     const path = getBreadcrumbPath();
-    document.getElementById('current-location').textContent = path[path.length - 1];
+    const breadcrumb = document.getElementById('breadcrumb');
+    const currentLocation = document.getElementById('current-location');
     
-    const backButton = document.getElementById('back-button');
-    if (path.length > 1) {
-        backButton.style.display = 'block';
+    if (path.length > 0) {
+        currentLocation.textContent = path[path.length - 1];
+        breadcrumb.style.display = 'flex';
+        document.getElementById('back-button').style.display = 'block';
     } else {
-        backButton.style.display = 'none';
+        breadcrumb.style.display = 'none';
+        document.getElementById('back-button').style.display = 'none';
     }
 }
 
