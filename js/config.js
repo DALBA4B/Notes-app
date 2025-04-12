@@ -3,7 +3,13 @@ const CONFIG = {
     SEARCH_DELAY: 300,
     MAX_PREVIEW_LENGTH: 100,
     MAX_NOTE_LENGTH: 50000,
-    MAX_TITLE_LENGTH: 100
+    MAX_TITLE_LENGTH: 100,
+    THEME_KEY: 'notesAppTheme',
+    THEMES: {
+        LIGHT: 'light',
+        DARK: 'dark',
+        BLACK: 'black'
+    }
 };
 
 const EVENTS = {

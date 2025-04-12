@@ -18,24 +18,30 @@
             <h4 id="current-location" style="margin: 0;"></h4>
         </div>
 
-        <div class="search-container">
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
-                <label class="mdl-button mdl-js-button mdl-button--icon" for="title-search">
-                    <i class="material-icons search-icon" title="Поиск по названиям">find_in_page</i>
-                </label>
-                <div class="mdl-textfield__expandable-holder">
-                    <input class="mdl-textfield__input" type="text" id="title-search" placeholder="Поиск по названиям...">
+        <div class="app-header">
+            <div class="search-container">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="title-search">
+                        <i class="material-icons search-icon" title="Поиск по названиям">find_in_page</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input class="mdl-textfield__input" type="text" id="title-search" placeholder="Поиск по названиям...">
+                    </div>
+                </div>
+                
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="content-search">
+                        <i class="material-icons search-icon" title="Поиск по содержимому">manage_search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input class="mdl-textfield__input" type="text" id="content-search" placeholder="Поиск по содержимому...">
+                    </div>
                 </div>
             </div>
             
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
-                <label class="mdl-button mdl-js-button mdl-button--icon" for="content-search">
-                    <i class="material-icons search-icon" title="Поиск по содержимому">manage_search</i>
-                </label>
-                <div class="mdl-textfield__expandable-holder">
-                    <input class="mdl-textfield__input" type="text" id="content-search" placeholder="Поиск по содержимому...">
-                </div>
-            </div>
+            <button id="settings-button" class="mdl-button mdl-js-button mdl-button--icon settings-button">
+                <i class="material-icons">settings</i>
+            </button>
         </div>
         
         <div id="notes-list"></div>
@@ -50,6 +56,32 @@
                 class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored mdl-js-ripple-effect">
                 <i class="material-icons">create_new_folder</i>
             </button>
+        </div>
+    </div>
+
+    <!-- Страница настроек -->
+    <div id="settings-page" class="settings-page">
+        <div class="settings-header">
+            <button id="close-settings-button" class="mdl-button mdl-js-button mdl-button--icon">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            <h4>Настройки</h4>
+        </div>
+        <div class="settings-content">
+            <div class="theme-selector">
+                <h5>Тема оформления</h5>
+                <div class="theme-options">
+                    <div class="theme-option theme-option-light" data-theme="light">
+                        <h6>Светлая</h6>
+                    </div>
+                    <div class="theme-option theme-option-dark" data-theme="dark">
+                        <h6>Тёмная</h6>
+                    </div>
+                    <div class="theme-option theme-option-black" data-theme="black">
+                        <h6>Чёрная</h6>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

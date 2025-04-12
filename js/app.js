@@ -36,9 +36,29 @@ function initializeApp() {
     initializeNoteEditor();
     initializeFormatMenu();
     initializeSearch();
+    initializeSettingsButton(); // Добавлена инициализация настроек
     
     // Принудительная отрисовка
     renderCurrentLevel();
+}
+
+// Инициализация кнопки настроек
+function initializeSettingsButton() {
+    const settingsButton = document.getElementById('settings-button');
+    const settingsPage = document.getElementById('settings-page');
+    const closeSettingsButton = document.getElementById('close-settings-button');
+
+    if (settingsButton && settingsPage && closeSettingsButton) {
+        settingsButton.addEventListener('click', () => {
+            document.querySelector('.notes-container').style.display = 'none';
+            settingsPage.style.display = 'block';
+        });
+
+        closeSettingsButton.addEventListener('click', () => {
+            settingsPage.style.display = 'none';
+            document.querySelector('.notes-container').style.display = 'block';
+        });
+    }
 }
 
 function renderCurrentLevel() {

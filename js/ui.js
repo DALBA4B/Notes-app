@@ -9,7 +9,8 @@ function createNoteCard(note) {
     
     const text = document.createElement('div');
     text.className = 'mdl-card__supporting-text';
-    text.textContent = note.content.substring(0, 100) + (note.content.length > 100 ? '...' : '');
+    text.textContent = note.content.substring(0, CONFIG.MAX_PREVIEW_LENGTH) + 
+                      (note.content.length > CONFIG.MAX_PREVIEW_LENGTH ? '...' : '');
     
     const actions = document.createElement('div');
     actions.className = 'mdl-card__actions mdl-card--border';
@@ -33,9 +34,7 @@ function createNoteCard(note) {
     card.appendChild(subtitle);
     card.appendChild(actions);
     
-    // Добавляем обработчик для открытия заметки при клике
     card.addEventListener('click', (e) => {
-        // Игнорируем клики по кнопкам
         if (!e.target.closest('.mdl-button')) {
             editNote(note.id);
         }
@@ -71,9 +70,7 @@ function createThemeCard(theme) {
     card.appendChild(text);
     card.appendChild(actions);
     
-    // Добавляем обработчик для открытия темы при клике
     card.addEventListener('click', (e) => {
-        // Игнорируем клики по кнопкам
         if (!e.target.closest('.mdl-button')) {
             openTheme(theme.id);
         }
@@ -93,7 +90,6 @@ function initializeDialogs() {
         dialogPolyfill.registerDialog(addThemeDialog);
     }
     
-    // Обработчики для диалога создания заметки
     document.getElementById('proceedToContentBtn').addEventListener('click', () => {
         proceedToNoteContent();
     });
@@ -103,7 +99,6 @@ function initializeDialogs() {
         document.getElementById('note-title').value = '';
     });
     
-    // Обработчики для диалога создания темы
     document.getElementById('saveThemeBtn').addEventListener('click', () => {
         saveTheme();
     });
@@ -115,19 +110,126 @@ function initializeDialogs() {
 }
 
 function initializeButtons() {
-    // Кнопка "Назад"
-    document.getElementById('back-button').addEventListener('click', () => {
-        currentPath.pop();
-        renderCurrentLevel();
-    });
+    const backButton = document.getElementById('back-button');
+    if (backButton) {
+        backButton.addEventListener('click', () => {
+            currentPath.pop();
+            renderCurrentLevel();
+        });
+    }
     
-    // Кнопка добавления заметки
-    document.getElementById('add-note-button').addEventListener('click', () => {
-        document.getElementById('add-note-dialog').showModal();
-    });
+    const addNoteButton = document.getElementById('add-note-button');
+    if (addNoteButton) {
+        addNoteButton.addEventListener('click', () => {
+            document.getElementById('add-note-dialog').showModal();
+        });
+    }
     
-    // Кнопка добавления темы
-    document.getElementById('add-theme-button').addEventListener('click', () => {
-        document.getElementById('add-theme-dialog').showModal();
+    const addThemeButton = document.getElementById('add-theme-button');
+    if (addThemeButton) {
+        addThemeButton.addEventListener('click', () => {
+            document.getElementById('add-theme-dialog').showModal();
+        });
+    }
+
+    initializeSettingsButton();
+}
+
+function initializeSettingsButton() {
+    const settingsButton = document.getElementById('settings-button');
+    const settingsPage = document.getElementById('settings-page');
+    const closeSettingsButton = document.getElementById('close-settings-button');
+    
+    if (settingsButton && settingsPage && closeSettingsButton) {
+        settingsButton.addEventListener('click', () => {
+            document.querySelector('.notes-container').style.display = 'none';
+            settingsPage.style.display = 'block';
+        });
+
+        closeSettingsButton.addEventListener('click', () => {
+            settingsPage.style.display = 'none';
+            document.querySelector('.notes-container').style.display = 'block';
+        });
+    }
+}
+
+function initializeThemes() {
+    const themeOptions = document.querySelectorAll('.theme-option');
+    let currentTheme = localStorage.getItem(CONFIG.THEME_KEY) || CONFIG.THEMES.LIGHT;
+    
+    // Применяем тему при загрузке
+    applyTheme(currentTheme);
+
+    themeOptions.forEach(option => {
+        // Добавляем обработчик для каждой опции темы
+        option.addEventListener('click', function() {
+            const newTheme = this.dataset.theme;
+            if (newTheme && newTheme !== currentTheme) {
+                currentTheme = newTheme;
+                applyTheme(newTheme);
+                localStorage.setItem(CONFIG.THEME_KEY, newTheme);
+                
+                // Обновляем активное состояние
+                themeOptions.forEach(opt => {
+                    opt.classList.remove('active');
+                });
+                this.classList.add('active');
+            }
+        });
+
+        // Устанавливаем активное состояние для текущей темы
+        if (option.dataset.theme === currentTheme) {
+            option.classList.add('active');
+        }
     });
 }
+
+function applyTheme(themeName) {
+    // Проверяем валидность темы
+    if (!Object.values(CONFIG.THEMES).includes(themeName)) {
+        themeName = CONFIG.THEMES.LIGHT;
+    }
+
+    // Применяем тему к HTML и Body
+    document.documentElement.setAttribute('data-theme', themeName);
+    document.body.setAttribute('data-theme', themeName);
+}
+
+function updateBreadcrumb() {
+    const breadcrumb = document.getElementById('breadcrumb');
+    const currentLocation = document.getElementById('current-location');
+    
+    if (currentPath.length > 0) {
+        breadcrumb.style.display = 'flex';
+        currentLocation.textContent = getCurrentTheme().title;
+    } else {
+        breadcrumb.style.display = 'none';
+        currentLocation.textContent = '';
+    }
+}
+
+function showNotification(message, duration = 3000) {
+    const notification = document.createElement('div');
+    notification.className = 'notification';
+    notification.textContent = message;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 100);
+    
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            document.body.removeChild(notification);
+        }, 300);
+    }, duration);
+}
+
+// Инициализация при загрузке страницы
+document.addEventListener('DOMContentLoaded', () => {
+    initializeDialogs();
+    initializeButtons();
+    initializeThemes();
+});
