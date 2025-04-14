@@ -201,7 +201,12 @@ function updateBreadcrumb() {
     
     if (currentPath.length > 0) {
         breadcrumb.style.display = 'flex';
-        currentLocation.textContent = getCurrentTheme().title;
+        let container = data;
+        for (let id of currentPath) {
+            container = container.themes.find(t => t.id === id) || 
+                       container.notes.find(n => n.id === id);
+        }
+        currentLocation.textContent = container.title;
     } else {
         breadcrumb.style.display = 'none';
         currentLocation.textContent = '';

@@ -87,9 +87,8 @@ function initializeNoteEditor() {
     // Кнопка закрытия редактора
     document.getElementById('close-editor-button').addEventListener('click', () => {
         if (hasUnsavedChanges) {
-            if (!confirm('У вас есть несохраненные изменения. Вы уверены, что хотите закрыть редактор?')) {
-                return;
-            }
+            saveNote();
+            showNotification('Заметка сохранена');
         }
         
         document.querySelector('.notes-container').style.display = 'block';
